@@ -24,5 +24,5 @@ const (
 
 // just prints sumethin
 func print_sumthin(message, level string) {
-	fmt.Println(+time.Now().Unix(), "["+level+"]", message)
+	fmt.Println(+time.Now().Unix(), "["+level+"]", message+"\n")
 }
