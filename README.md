@@ -8,4 +8,4 @@ go build
 ```
 
 ## license
-MIT License, read [LICENSE](#LICENSE).
+MIT License, read [LICENSE](LICENSE).
