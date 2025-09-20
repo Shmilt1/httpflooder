@@ -41,7 +41,7 @@ func GenerateRandomUserAgent() string {
 		// can add more...
 	}
 
-	return userAgents[rand.Int()%len(userAgents)-1]
+	return userAgents[rand.Int()%len(userAgents)]
 }
 
 func GenerateRandomRequests(host string) []string {
