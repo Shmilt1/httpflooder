@@ -119,7 +119,8 @@ func (flooder *HttpFlooder) Flood() {
 		}
 		defer conn.Close()
 
-		for _, request := range GenerateRandomRequests(flooder.Host) {
+		requests := GenerateRandomRequests(flooder.Host)
+		for _, request := range requests {
 			conn.Write([]byte(request))
 		}
 
