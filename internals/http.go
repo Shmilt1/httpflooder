@@ -121,7 +121,12 @@ func (flooder *HttpFlooder) Flood() {
 
 		requests := GenerateRandomRequests(flooder.Host)
 		for _, request := range requests {
-			conn.Write([]byte(request))
+			n, err := conn.Write([]byte(request))
+			if err != nil {
+				print_sumthin("failed to send request!", ERROR);
+				continue
+			}
+			print_sumthin("Sent: "+strconv.Itoa(n), INFO)
 		}
 
 		if flooder.Interval > 0 {
