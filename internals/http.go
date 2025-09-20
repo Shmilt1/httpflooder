@@ -57,7 +57,7 @@ func GenerateRandomRequests(host string) []string {
 		case "GET":
 			requests = append(requests, "GET /?"+strconv.Itoa(rand.Int())+" HTTP/1.1\r\n"+"Host: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n")
 		case "POST":
-			requests = append(requests, "POST / HTTP/1.1\r\nHost: "+host+"\r\nContent-Type: application/json\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n{\"message\": \"ABCDEFGHIJKLMNOPQRSTUVWXYZ\"\r\n\r\n")
+			requests = append(requests, "POST / HTTP/1.1\r\nHost: "+host+"\r\nContent-Type: application/json\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n{\"message\": \"ABCDEFGHIJKLMNOPQRSTUVWXYZ\"}\r\n\r\n")
 		case "PUT":
 			requests = append(requests, "PUT "+strconv.Itoa(rand.Int())+".html HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n<!DOCTYPE html>\n<html>\n<p>ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>\n</html>\r\n\r\n")
 		case "TRACE":
