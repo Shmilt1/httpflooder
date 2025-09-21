@@ -34,6 +34,7 @@ func main() {
 			}
 
 			flooder.Flood()
+			return
 		}
 		for i := 0; i < *threads; i++ {
 			wg.Add(1)
