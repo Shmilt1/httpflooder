@@ -118,6 +118,7 @@ func GenerateRandomEndpoint() string {
 		"/home",
 		"/index",
 		"/contact",
+		"/contact-us",
 		"/support",
 		"/login",
 		"/products",
@@ -127,6 +128,11 @@ func GenerateRandomEndpoint() string {
 		"/api/submit",
 		"/api/create_post.php",
 		"/api/create_reply.php",
+		"/api/delete_post.php",
+		"/api/delete_reply.php",
+		"/sign-in.html",
+		"/employers",
+		"/vision.htm"
 		"/" + GenerateRandomPayload(256),
 	}
 
