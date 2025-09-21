@@ -97,9 +97,9 @@ func GenerateRandomUserAgent() string {
 	return userAgents[rand.Intn(len(userAgents))]
 }
 
-func GenerateRandomPayload() string {
+func GenerateRandomPayload(size int) string {
 	alphabet := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
-	payload := make([]rune, rand.Intn(1024))
+	payload := make([]rune, rand.Intn(size))
 
 	for i := 0; i < len(payload); i++ {
 		payload[i] = rune(alphabet[rand.Intn(len(alphabet))])
@@ -127,7 +127,7 @@ func GenerateRandomEndpoint() string {
 		"/api/submit",
 		"/api/create_post.php",
 		"/api/create_reply.php",
-		"/" + GenerateRandomPayload(),
+		"/" + GenerateRandomPayload(256),
 	}
 
 	return endpoints[rand.Intn(len(endpoints))]
@@ -159,7 +159,7 @@ func GenerateRandomRequests(host string) []string {
 				"application/pdf",
 			}
 
-			requests = append(requests, "POST "+GenerateRandomEndpoint()+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\nDate: "+time.Now().UTC().Format(time.RFC1123)+"\r\nContent-Type: "+contentTypes[rand.Intn(len(contentTypes))]+"\r\n\r\n"+GenerateRandomPayload()+"\r\n\r\n")
+			requests = append(requests, "POST "+GenerateRandomEndpoint()+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\nDate: "+time.Now().UTC().Format(time.RFC1123)+"\r\nContent-Type: "+contentTypes[rand.Intn(len(contentTypes))]+"\r\n\r\n"+GenerateRandomPayload(1024)+"\r\n\r\n")
 		case "PUT":
 			contentTypes := []string{
 				"text/plain",
