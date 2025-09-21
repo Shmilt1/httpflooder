@@ -280,7 +280,7 @@ func (flooder *HttpFlooder) Flood() {
 				conn, err = net.Dial("tcp", combineHost(flooder.Host, flooder.Port))
 				if err != nil {
 					print_sumthin("failed to establish connection!", ERROR)
-					continue
+					break
 				}
 
 				sockets = append(sockets, conn)
