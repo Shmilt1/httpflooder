@@ -294,8 +294,8 @@ func (flooder *HttpFlooder) Flood() {
 		}
 	}
 
-	for _, conn := range sockets {
-		err := conn.Close()
+	for _, c := range sockets {
+		err := c.Close()
 		if err != nil {
 			print_sumthin("failed to close connection!", ERROR)
 			continue
