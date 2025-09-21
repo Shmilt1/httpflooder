@@ -133,19 +133,55 @@ func GenerateRandomEndpoint() string {
 		"/sign-in.html",
 		"/employers",
 		"/vision.htm"
-		"/" + GenerateRandomPayload(256),
+		"/" + GenerateRandomPayload(128),
 	}
 
 	return endpoints[rand.Intn(len(endpoints))]
 }
 
+func GenerateRandomContentType() string {
+	contentTypes := []string{
+		"text/css",
+		"text/html",
+		"text/javascript",
+		"text/xml",
+		"text/csv",
+		"text/plain",
+		"image/png",
+		"image/jpeg",
+		"image/avif",
+		"image/apng",
+		"image/bmp",
+		"image/gif",
+		"application/octet-stream",
+		"application/x-bzip",
+		"application/pdf",
+		"application/x-bzip2",
+		"application/msword",
+		"application/gzip",
+		"application/rtf",
+		"application/x-sh",
+		"application/json",
+		"application/xml",
+		"application/x-7z-compressed",
+		"application/x-httpd-php",
+		"application/java-archive",
+		"video/mpeg",
+		"video/mp4",
+		"audio/midi",
+		"audio/aac",
+	}
+
+	return contentTypes[rand.Intn(len(contentTypes))]
+}
+
 func GenerateRandomRequests(host string) []string {
 	methods := []string{"POST", "GET", "PUT", "HEAD", "DELETE", "OPTIONS", "TRACE", "CONNECT"}
-
+	
 	rand.Shuffle(len(methods), func(i, j int) {
 		methods[i], methods[j] = methods[j], methods[i]
 	})
-
+	
 	var requests []string
 	for _, method := range methods {
 		switch method {
@@ -154,31 +190,9 @@ func GenerateRandomRequests(host string) []string {
 		case "HEAD":
 			requests = append(requests, "HEAD "+GenerateRandomEndpoint()+"?"+strconv.Itoa(rand.Intn(10000))+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n")
 		case "POST":
-			contentTypes := []string{
-				"text/plain",
-				"application/json",
-				"application/xml",
-				"text/css",
-				"text/html; charset=UTF-8",
-				"image/png",
-				"image/jpeg",
-				"application/pdf",
-			}
-
-			requests = append(requests, "POST "+GenerateRandomEndpoint()+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\nDate: "+time.Now().UTC().Format(time.RFC1123)+"\r\nContent-Type: "+contentTypes[rand.Intn(len(contentTypes))]+"\r\n\r\n"+GenerateRandomPayload(1024)+"\r\n\r\n")
+			requests = append(requests, "POST "+GenerateRandomEndpoint()+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\nDate: "+time.Now().UTC().Format(time.RFC1123)+"\r\nContent-Type: "+GenerateRandomContentType()+"\r\n\r\n"+GenerateRandomPayload(1024)+"\r\n\r\n")
 		case "PUT":
-			contentTypes := []string{
-				"text/plain",
-				"application/json",
-				"application/xml",
-				"text/css",
-				"text/html; charset=UTF-8",
-				"image/png",
-				"image/jpeg",
-				"application/pdf",
-			}
-
-			requests = append(requests, "PUT "+GenerateRandomEndpoint()+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\nDate: "+time.Now().UTC().Format(time.RFC1123)+"\r\nContent-Type: "+contentTypes[rand.Intn(len(contentTypes))]+"\r\n\r\n"+GenerateRandomPayload()+"\r\n\r\n")
+			requests = append(requests, "PUT "+GenerateRandomEndpoint()+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\nDate: "+time.Now().UTC().Format(time.RFC1123)+"\r\nContent-Type: "+GenerateRandomContentType()+"\r\n\r\n"+GenerateRandomPayload(1024)+"\r\n\r\n")
 		case "DELETE":
 			requests = append(requests, "DELETE "+GenerateRandomEndpoint()+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n")
 		case "CONNECT":
