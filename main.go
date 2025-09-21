@@ -13,11 +13,16 @@ func main() {
 	interval := flag.Int("i", 0, "Interval per requests")
 	threads := flag.Int("t", 2, "Threads")
 	secure := flag.Bool("s", false, "Target is HTTPS")
+	sockets := flag.Int("c", 1, "How many sockets to use")
 
 	flag.Parse()
 
 	if *duration == 0 {
 		*duration = 60
+	}
+
+	if *sockets == 0 {
+		*sockets = 1
 	}
 
 	var wg sync.WaitGroup
@@ -31,6 +36,7 @@ func main() {
 				Duration: *duration,
 				Interval: *interval,
 				Secure:   *secure,
+				Sockets:  *sockets,
 			}
 
 			flooder.Flood()
@@ -47,6 +53,7 @@ func main() {
 					Duration: *duration,
 					Interval: *interval,
 					Secure:   *secure,
+					Sockets:  *sockets,
 				}
 
 				flooder.Flood()
