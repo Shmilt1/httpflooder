@@ -222,6 +222,8 @@ func (flooder *HttpFlooder) Flood() {
 			if flooder.Interval > 0 {
 				time.Sleep(time.Duration(flooder.Interval) * time.Second)
 			}
+
+			continue
 		}
 
 		conn, err := net.Dial("tcp", combineHost(flooder.Host, flooder.Port))
