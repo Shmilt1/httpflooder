@@ -133,7 +133,7 @@ func GenerateRandomEndpoint() string {
 		"/sign-in.html",
 		"/employers",
 		"/vision.htm"
-		"/" + GenerateRandomPayload(128),
+		"/" + GenerateRandomPayload(30),
 	}
 
 	return endpoints[rand.Intn(len(endpoints))]
