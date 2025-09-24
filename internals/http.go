@@ -294,7 +294,7 @@ func (flooder *HttpFlooder) Flood() {
 				sockets[conn.RemoteAddr().String()] = conn
 				continue
 			}
-			print_sumthin("Sent: "+strconv.Itoa(n), INFO)
+			print_sumthin("Sent/s: "+strconv.FormatFloat(float64(n)/time.Since(start).Seconds(), 'f', 2, 64)+"B", INFO)
 		}
 
 		if flooder.Interval > 0 {
