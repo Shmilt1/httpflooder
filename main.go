@@ -37,6 +37,7 @@ func main() {
 				Interval: *interval,
 				Secure:   *secure,
 				Sockets:  *sockets,
+				ThreadID: 0,
 			}
 
 			flooder.Flood()
@@ -54,6 +55,7 @@ func main() {
 					Interval: *interval,
 					Secure:   *secure,
 					Sockets:  *sockets,
+					ThreadID: i + 1,
 				}
 
 				flooder.Flood()
