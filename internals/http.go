@@ -155,6 +155,7 @@ func GenerateRandomContentType() string {
 		"image/bmp",
 		"image/gif",
 		"application/octet-stream",
+		"application/x-www-form-urlencoded",
 		"application/x-bzip",
 		"application/pdf",
 		"application/x-bzip2",
