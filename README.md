@@ -13,8 +13,14 @@ you agree that when using this tool, the maintainer will NOT be held responsible
 please don't use this tool on anyone without explicit permission first!!! ⚠️
 
 ## example
+Linux:
 ```bash
 ./httpflooder -d 120 -i 1 -t 4 -c 8 -h 127.0.0.1 -p 8080
+```
+
+Windows:
+```bash
+.\httpflooder.exe -d 120 -i 1 -t 4 -c 8 -h 127.0.0.1 -p 8080
 ```
 
 ## license
