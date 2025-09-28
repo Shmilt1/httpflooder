@@ -2,8 +2,9 @@ package main
 
 import (
 	"flag"
-	"httpflooder/internals"
 	"sync"
+
+	"github.com/Shmilt1/httpflooder/internals"
 )
 
 func main() {
