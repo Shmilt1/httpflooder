@@ -31,7 +31,7 @@ func main() {
 
 	if *host != "" && *port != 0 {
 		if *threads == 0 {
-			flooder := internals.parseFlooderArgs(
+			flooder := internals.ParseFlooderArgs(
 				*protocol,
 				*host,
 				*port,
@@ -50,7 +50,7 @@ func main() {
 			go func() {
 				defer wg.Done()
 
-				flooder := internals.parseFlooderArgs(
+				flooder := internals.ParseFlooderArgs(
 					*protocol,
 					*host,
 					*port,
