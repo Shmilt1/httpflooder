@@ -21,6 +21,13 @@ func parseFlooderArgs(protocol, host string, port, duration, interval, sockets, 
 				Sockets:  sockets,
 				ThreadID: threadId,
 			}
+			/*
+			planned protocols:
+			case "syn":
+			case "udp":
+			case "dns":
+			case "tls":
+			*/	
 	}
 	
 	return flooder
