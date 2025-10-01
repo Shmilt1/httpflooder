@@ -23,6 +23,8 @@ then run this in your terminal / shell to compile / build the project:
 go build
 ```
 
+You should now see (```httpflooder``` on Linux) or (```httpflooder.exe``` on Windows) as the output, now refer to [example](#example) or [docs](#docs). 
+
 ## notice
 you agree that when using this tool, the maintainer will NOT be held responsible for any misuse!!! ⚠️
 
