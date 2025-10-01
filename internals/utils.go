@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func parseFlooderArgs(protocol, host string, port, duration, interval, sockets, threadId int, secure bool) Flooder {
+func ParseFlooderArgs(protocol, host string, port, duration, interval, sockets, threadId int, secure bool) Flooder {
 	var flooder Flooder
 
 	switch protocol {
