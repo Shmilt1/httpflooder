@@ -12,7 +12,13 @@ simple http flooder
 you need to own the Go runtime if you want to compile / build this project as well.. it's written in Go,
 you can download and install the Go runtime at: https://go.dev/dl/.
 
-run this in your terminal / shell:
+first clone the project and move into the project's directory:
+```bash
+git clone https://github.com/Shmilt1/httpflooder.git
+cd httpflooder/
+```
+
+then run this in your terminal / shell to compile / build the project:
 ```bash
 go build
 ```
