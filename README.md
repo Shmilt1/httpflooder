@@ -37,12 +37,12 @@ OPTIONS: [
 ## example
 Linux:
 ```bash
-./httpflooder -d 120 -i 1 -t 4 -c 8 -h 127.0.0.1 -p 8080
+./httpflooder -d 120 -i 1 -t 4 -c 8 -h 127.0.0.1 -p 8080 -m http
 ```
 
 Windows:
 ```bash
-.\httpflooder.exe -d 120 -i 1 -t 4 -c 8 -h 127.0.0.1 -p 8080
+.\httpflooder.exe -d 120 -i 1 -t 4 -c 8 -h 127.0.0.1 -p 8080 -m http
 ```
 
 ## license
