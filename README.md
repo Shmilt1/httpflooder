@@ -10,6 +10,7 @@ simple http flooder
 
 ## building
 you need to own the Go runtime if you want to compile / build this project as well.. it's written in Go.
+Download Go at: https://go.dev/dl/.
 
 run:
 ```bash
