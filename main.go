@@ -13,8 +13,9 @@ func main() {
 	duration := flag.Int("d", 60, "Duration of flood")
 	interval := flag.Int("i", 0, "Interval per requests")
 	threads := flag.Int("t", 2, "Threads")
-	secure := flag.Bool("s", false, "Target is HTTPS")
+	secure := flag.Bool("s", false, "Target uses SSL/TLS")
 	sockets := flag.Int("c", 1, "How many sockets to use")
+	protocol := flag.String("m", "http", "Target protocol")
 
 	flag.Parse()
 
@@ -30,16 +31,16 @@ func main() {
 
 	if *host != "" && *port != 0 {
 		if *threads == 0 {
-			// ...
-			flooder := internals.HttpFlooder{
-				Host:     *host,
-				Port:     *port,
-				Duration: *duration,
-				Interval: *interval,
-				Secure:   *secure,
-				Sockets:  *sockets,
-				ThreadID: 0,
-			}
+			flooder := internals.parseFlooderArgs(
+				*protocol,
+				*host,
+				*port,
+				*duration,
+				*interval,
+				*sockets,
+				0,
+				*secure
+			)
 
 			flooder.Flood()
 			return
@@ -49,15 +50,16 @@ func main() {
 			go func() {
 				defer wg.Done()
 
-				flooder := internals.HttpFlooder{
-					Host:     *host,
-					Port:     *port,
-					Duration: *duration,
-					Interval: *interval,
-					Secure:   *secure,
-					Sockets:  *sockets,
-					ThreadID: i + 1,
-				}
+				flooder := internals.parseFlooderArgs(
+					*protocol,
+					*host,
+					*port,
+					*duration,
+					*interval,
+					*sockets,
+					i + 1,
+					*secure
+				)
 
 				flooder.Flood()
 			}()
