@@ -7,6 +7,25 @@ import (
 	"time"
 )
 
+func parseFlooderArgs(protocol, host string, port, duration, interval, sockets, threadId int, secure bool) Flooder {
+	var flooder Flooder
+
+	switch protocol {
+		case "http":
+			flooder = internals.HttpFlooder{
+				Host:     host,
+				Port:     port,
+				Duration: duration,
+				Interval: interval,
+				Secure:   secure,
+				Sockets:  sockets,
+				ThreadID: threadId,
+			}
+	}
+	
+	return flooder
+}
+
 func combineHost(host string, port int) string {
 	parts := strings.Split(host, ":")
 	if len(parts) == 8 {
