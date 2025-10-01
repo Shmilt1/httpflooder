@@ -9,8 +9,8 @@ simple http flooder
 - [license](#license)
 
 ## building
-you need to own the Go runtime if you want to compile / build this project as well.. it's written in Go.
-Download Go at: https://go.dev/dl/.
+you need to own the Go runtime if you want to compile / build this project as well.. it's written in Go,
+you can download and install the Go runtime at: https://go.dev/dl/.
 
 run:
 ```bash
