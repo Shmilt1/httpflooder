@@ -1,3 +1,4 @@
+/*
 package internals
 
 import (
@@ -72,3 +73,4 @@ func (flooder *UdpFlooder) Flood() {
 			print_sumthin("Thread: "+strconv.FormatInt(int64(flooder.ThreadID), 10)+" | Sent/s: "+strconv.FormatFloat(float64(n)/time.Since(start).Seconds(), 'f', 2, 64)+"B | Total: "+strconv.FormatInt(total, 10)+"B | Sockets: "+strconv.FormatInt(int64(len(sockets)), 10), INFO)
     }
 }
+*/
