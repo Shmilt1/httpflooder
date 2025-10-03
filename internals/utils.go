@@ -11,25 +11,25 @@ func ParseFlooderArgs(protocol, host string, port, duration, interval, sockets, 
 	var flooder Flooder
 
 	switch protocol {
-		case "http":
-			flooder = internals.HttpFlooder{
-				Host:     host,
-				Port:     port,
-				Duration: duration,
-				Interval: interval,
-				Secure:   secure,
-				Sockets:  sockets,
-				ThreadID: threadId,
-			}
-			/*
+	case "http":
+		flooder = &HttpFlooder{
+			Host:     host,
+			Port:     port,
+			Duration: duration,
+			Interval: interval,
+			Sockets:  sockets,
+			ThreadID: threadId,
+			Secure:   secure,
+		}
+		/*
 			planned protocols:
 			case "syn":
 			case "udp":
 			case "dns":
 			case "tls":
-			*/	
+		*/
 	}
-	
+
 	return flooder
 }
 

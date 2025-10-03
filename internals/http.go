@@ -276,11 +276,13 @@ func (flooder *HttpFlooder) Flood() {
 
 		// even though map iterations are random in Go, this just adds extra randomness.
 		num := rand.Intn(len(sockets))
-		for i, key := range sockets {
+		i := 0
+		for key := range sockets {
 			if i == num {
 				conn = sockets[key]
 				break
 			}
+			i++
 		}
 
 		requests := GenerateRandomRequests(flooder.Host)

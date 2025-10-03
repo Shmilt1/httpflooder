@@ -39,7 +39,7 @@ func main() {
 				*interval,
 				*sockets,
 				0,
-				*secure
+				*secure,
 			)
 
 			flooder.Flood()
@@ -57,8 +57,8 @@ func main() {
 					*duration,
 					*interval,
 					*sockets,
-					i + 1,
-					*secure
+					i+1,
+					*secure,
 				)
 
 				flooder.Flood()
