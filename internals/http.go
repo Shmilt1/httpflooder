@@ -292,7 +292,11 @@ func (flooder *HttpFlooder) Flood() {
 				print_sumthin("failed to send request!", ERROR)
 
 				// assuming that the server forcefully closed our socket
-				conn.Close()
+				err = conn.Close()
+				if err != nil {
+				   print_sumthin("failed to close connection!", ERROR)
+				   break
+				}
 				delete(sockets, conn.LocalAddr().String())
 
 				conn, err = net.Dial("tcp", combineHost(flooder.Host, flooder.Port))
