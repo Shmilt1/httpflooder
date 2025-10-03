@@ -71,5 +71,19 @@ func (flooder *UdpFlooder) Flood() {
 
 		total += int64(n)
 		print_sumthin("Thread: "+strconv.FormatInt(int64(flooder.ThreadID), 10)+" | Sent/s: "+strconv.FormatFloat(float64(n)/time.Since(start).Seconds(), 'f', 2, 64)+"B | Total: "+strconv.FormatInt(total, 10)+"B | Sockets: "+strconv.FormatInt(int64(len(sockets)), 10), INFO)
+
+		if flooder.Interval > 0 {
+			time.Sleep(time.Duration(flooder.Interval) * time.Second)
+		}
 	}
+
+	for _, c := range sockets {
+		err := c.Close()
+		if err != nil {
+			print_sumthin("failed to close connection!", ERROR)
+			continue
+		}
+	}
+
+	print_sumthin("finished!", INFO)
 }

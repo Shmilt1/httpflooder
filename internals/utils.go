@@ -21,10 +21,18 @@ func ParseFlooderArgs(protocol, host string, port, duration, interval, sockets, 
 			ThreadID: threadId,
 			Secure:   secure,
 		}
+	case "udp":
+		flooder = &UdpFlooder{
+			Host:     host,
+			Port:     port,
+			Duration: duration,
+			Interval: interval,
+			Sockets:  sockets,
+			ThreadID: threadId,
+		}
 		/*
 			planned protocols:
 			case "syn":
-			case "udp":
 			case "dns":
 			case "tls":
 		*/
